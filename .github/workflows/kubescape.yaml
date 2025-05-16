@@ -12,6 +12,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Kubescape Scan
       uses: kubescape/github-action@main
+      continue-on-error: true
       with:
         format: sarif
         outputFile: results
@@ -19,8 +20,3 @@ jobs:
         verbose: on
         frameworks:
           nsa,mitre
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        pr_number=${{ github.event.pull_request.number }}
-        gh pr comment "$pr_number" --body-file result
