@@ -14,8 +14,7 @@ jobs:
     - name: Kubescape Scan
       uses: kubescape/github-action@main
       with:
-        format: sarif
-        outputFile: results
+        format: pretty-print
         verbose: on
         frameworks:
           nsa,mitre
