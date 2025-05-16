@@ -8,9 +8,20 @@ jobs:
       contents: read
       security-events: write
     steps:
-    - uses: actions/checkout@v3
-    - uses: kubescape/github-action@main
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Kubescape Scan
+      uses: kubescape/github-action@main
       with:
+        format: sarif
+        outputFile: results
+        severityThreshold: high
         verbose: on
         frameworks:
-          nsa,cis-eks-t1.2.0
+          nsa,mitre
+    - name: Comment in PR
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        pr_number=${{ github.event.pull_request.number }}
+        gh pr comment "$pr_number" --body-file result
