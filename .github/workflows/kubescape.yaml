@@ -15,9 +15,8 @@ jobs:
       uses: kubescape/github-action@main
       with:
         format: sarif
-        outputFile: results
-        verbose: on
         outputFile: kubescape_output.txt
+        verbose: on
         frameworks:
           nsa,mitre
     - name: Comment in PR
