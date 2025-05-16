@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vuln-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: vuln
+  template:
+    metadata:
+      labels:
+        app: vuln
+    spec:
+      containers:
+        - name: vuln-container
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80
+          env:
+            - name: PASSWORD
+              value: "{{ .Values.env.password }}"   # ❌ Hardcoded env secret
+          securityContext:
+            runAsUser: 0                            # ❌ Runs as root
+            allowPrivilegeEscalation: true         # ❌ Allows privilege escalation:wq!
