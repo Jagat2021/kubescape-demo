@@ -10,3 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: kubescape/github-action@main
+      with:
+        verbose: on
+        frameworks:
+          nsa,mitre
