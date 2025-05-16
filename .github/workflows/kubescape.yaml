@@ -25,4 +25,4 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         pr_number=${{ github.event.pull_request.number }}
-        gh pr comment "$pr_number" --body-file result
+        gh pr comment "$pr_number" --body-file results
