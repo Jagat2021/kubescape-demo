@@ -13,4 +13,4 @@ jobs:
       with:
         verbose: on
         frameworks:
-          nsa
+          nsa,cis-eks-t1.2.0
