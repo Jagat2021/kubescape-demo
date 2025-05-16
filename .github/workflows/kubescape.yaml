@@ -13,9 +13,8 @@ jobs:
 
     - name: Kubescape Scan
       uses: kubescape/github-action@main
+      id: kubescape
       with:
-        format: sarif
-        outputFile: kubescape_output.txt
         verbose: on
         frameworks:
           nsa,mitre
@@ -25,4 +24,5 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         pr_number=${{ github.event.pull_request.number }}
-        ll
+        #gh pr comment "$pr_number" --body-file kubescape_output.txt
+        echo "Result : ${{ steps.kubescape.outputs.id }}"
