@@ -14,8 +14,10 @@ jobs:
     - name: Kubescape Scan
       uses: kubescape/github-action@main
       with:
-        format: pretty-print
+        format: sarif
+        outputFile: results
         verbose: on
+        outputFile: kubescape_output.txt
         frameworks:
           nsa,mitre
     - name: Comment in PR
@@ -24,4 +26,4 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         pr_number=${{ github.event.pull_request.number }}
-        gh pr comment "$pr_number" --body-file results
+        gh pr comment "$pr_number" --body-file kubescape_output.txt
