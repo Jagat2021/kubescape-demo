@@ -22,4 +22,4 @@ jobs:
             FRAMEWORKS="nsa,cis-eks-t1.2.0"
             CURRENT_DIR=${{ github.event.repository.name }}
             LOG_LEVEL="-l error"
-            $COMMAND LOG_LEVEL $FRAMEWORKS $CURRENT_DIR
+            $COMMAND $LOG_LEVEL $FRAMEWORKS $CURRENT_DIR
