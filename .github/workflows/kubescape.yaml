@@ -12,6 +12,7 @@ jobs:
         run: |
             echo "Installing Kubescape..."
             curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
+            export PATH=$PATH:/home/runner/.kubescape/bin
             echo "Kubescape installation completed"
     
             echo "Starting Kubescape scan..."
