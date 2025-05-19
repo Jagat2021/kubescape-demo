@@ -17,12 +17,9 @@
       
               echo "Starting Kubescape scan..."
               kubescape version
-              
-              # setting up the command
-              COMMAND="kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 ."
-              eval $COMMAND
+            
+              kubescape scan -v framework nsa,cis-eks-t1.2.0 .
               
               # Comment in PR
               echo "Commenting on PR"
-              PR_COMMAND="kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 . | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'"
-              eval $PR_COMMAND
+              kubescape scan -l error framework nsa,cis-eks-t1.2.0 . | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'
