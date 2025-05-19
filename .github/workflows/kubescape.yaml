@@ -18,5 +18,10 @@ jobs:
             echo "Starting Kubescape scan..."
             kubescape version
             
-            #setting up the command
-            kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
+            # setting up the command
+            $COMMAND = kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
+            $COMMAND
+            
+            # Comment in PR
+            echo "Commenting on PR"
+            $COMMAND | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'
