@@ -19,11 +19,12 @@
               kubescape version
               
               # setting up the command
-              COMMAND=kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
+              COMMAND="kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 ."
               eval $COMMAND
               
               # Comment in PR
               echo "Commenting on PR"
               eval "$COMMAND" | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'
+
 
 
