@@ -16,13 +16,7 @@ jobs:
             echo "Kubescape installation completed"
     
             echo "Starting Kubescape scan..."
+            kubescape version
             
-            # prepare command
-            COMMAND="kubescape scan"
-            FRAMEWORKS="nsa,cis-eks-t1.2.0"
-            CURRENT_DIR=${{ github.event.repository.name }}
-            LOG_LEVEL="-l error"
-#            $COMMAND $LOG_LEVEL $FRAMEWORKS $CURRENT_DIR
-            pwd
-            #list contents of the current directory
-            ls -la
+            # command to show the current working directory
+            echo "Current working directory: $(pwd)"
