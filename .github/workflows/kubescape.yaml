@@ -18,5 +18,5 @@ jobs:
             echo "Starting Kubescape scan..."
             kubescape version
             
-            # setting up the command
+            #setting up the command
             kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
