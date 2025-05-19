@@ -19,7 +19,7 @@ jobs:
             kubescape version
             
             # setting up the command
-            $COMMAND = kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
+            COMMAND = kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
             $COMMAND
             
             # Comment in PR
