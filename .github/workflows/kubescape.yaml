@@ -18,11 +18,5 @@ jobs:
             echo "Starting Kubescape scan..."
             kubescape version
             
-            # command to show the current working directory
-            echo "Current working directory: $(pwd)"
-            # show folder and files in the current working directory
-            echo "Contents of the current directory:"
-            ls -la $(pwd)
-            
             # setting up the command
-            kubescape scan -l error framework nsa,cis-eks-t1.2.0 .
+            kubescape scan -v -l error framework nsa,cis-eks-t1.2.0 .
