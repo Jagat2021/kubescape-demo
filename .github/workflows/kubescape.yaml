@@ -24,6 +24,6 @@ jobs:
             LOG_LEVEL="-l error"
 #            $COMMAND $LOG_LEVEL $FRAMEWORKS $CURRENT_DIR
             PWD=$(pwd)
-            echo "Current working directory: $PWD"
+            echo "Current working directory: $PWD
             #list contents of the current directory
             ls -la $PWD
