@@ -1,12 +1,25 @@
-name: Kubescape scan
-on: [pull_request]
-jobs:
-  kubescape:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-    - uses: actions/checkout@v3
-    - uses: kubescape/github-action@main
+  name: Kubescape Scan
+  on: pull_request
+  jobs:
+    kubescape:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Kubescape Scan
+          run: |
+              echo "Installing Kubescape..."
+              curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
+              export PATH=$PATH:/home/runner/.kubescape/bin
+              echo "Kubescape installation completed"
+      
+              echo "Starting Kubescape scan..."
+              kubescape version
+            
+              kubescape scan -v framework nsa,cis-eks-t1.2.0 .
+              
+              # Comment in PR
+              echo "Commenting on PR"
+              kubescape scan -l error framework nsa,cis-eks-t1.2.0 . | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'
