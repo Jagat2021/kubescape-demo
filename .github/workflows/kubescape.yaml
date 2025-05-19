@@ -1,28 +1,24 @@
-name: Kubescape scan
-on: [pull_request]
+name: Kubescape Scan
+on: pull_request
 jobs:
   kubescape:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Kubescape Scan
-      uses: kubescape/github-action@main
-      id: kubescape
-      with:
-        verbose: on
-        frameworks:
-          nsa,mitre
-    - name: Comment in PR
-      if: always()
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        pr_number=${{ github.event.pull_request.number }}
-        #gh pr comment "$pr_number" --body-file kubescape_output.txt
-        echo "Result : ${{ steps.kubescape.outputs.id }}"
+      - name: Kubescape Scan
+        run: |
+            echo "Installing Kubescape..."
+            curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
+            echo "Kubescape installation completed"
+    
+            echo "Starting Kubescape scan..."
+            
+            # prepare command
+            COMMAND="kubescape scan"
+            FRAMEWORKS="nsa,cis-eks-t1.2.0"
+            CURRENT_DIR=${{ github.event.repository.name }}
+            LOG_LEVEL="-l error"
+            $COMMAND LOG_LEVEL $FRAMEWORKS $CURRENT_DIR
