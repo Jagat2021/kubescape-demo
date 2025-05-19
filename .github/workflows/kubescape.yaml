@@ -24,7 +24,8 @@
               
               # Comment in PR
               echo "Commenting on PR"
-              eval "$COMMAND" | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'
+              PR_COMMAND="kubescape scan -l error framework nsa,cis-eks-t1.2.0 kubeS | awk '/^Run with .*verbose/,EOF' | tail -n +2 | awk '/^│ *(High|Critical)/ || /^├|^┌|^└/ || /Resource Summary/'"
+              eval $PR_COMMAND
 
 
 
