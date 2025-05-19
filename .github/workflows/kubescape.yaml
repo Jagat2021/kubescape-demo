@@ -23,3 +23,10 @@ jobs:
             # show folder and files in the current working directory
             echo "Contents of the current directory:"
             ls -la $(pwd)
+            
+            # setting up the command
+            COMMAND="kubescape scan"
+            FRAMEWORKS="nsa,cis-eks-t1.2.0"
+            LOG_LEVEL="-l error"
+            $SCAN_DIR="."
+            $COMMAND $LOG_LEVEL $FRAMEWORKS $SCAN_DIR
