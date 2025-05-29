@@ -18,9 +18,13 @@
       
               echo "Starting Kubescape scan..."
               kubescape version
-            
+              
+              set +e
+
               kubescape scan --severity-threshold high --keep-local -l debug framework nsa,mitre,soc2,cis-eks-t1.2.0 . -v
               EXIT_CODE=$?
+              
+              set -e
 
               if [ $EXIT_CODE -ne 0 ]; then
                 echo "::error::❌ Kubescape scan failed due to high or critical findings."
