@@ -20,9 +20,12 @@
               kubescape version
             
               kubescape scan --severity-threshold high --keep-local -l debug framework nsa,mitre,soc2,cis-eks-t1.2.0 . -v
-              
-        - name: Check Kubescape Results
-            if: steps.kubescape.outcome == 'failure'
-            run: |
-              echo "::error::There is Critical or High findings detected that will block this PR until resolved. Please fix and re-run the workflow"
-              exit 1
+              EXIT_CODE=$?
+
+              if [ $EXIT_CODE -ne 0 ]; then
+                echo "::error::❌ Kubescape scan failed due to high or critical findings."
+                echo "Please review the scan results above and fix the issues before merging."
+                exit $EXIT_CODE
+              else
+                echo "✅ Kubescape scan passed. No high or critical findings."
+              fi
