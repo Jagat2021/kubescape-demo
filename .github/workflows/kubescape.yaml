@@ -3,8 +3,10 @@
     pull_request:
     issue_comment:
       types: [created]
-    discussion_comment:
-      types: [created, deleted]
+
+  permissions:
+    contents: read
+    pull-requests: read
   jobs:
     kubescape:
       runs-on: ubuntu-latest
