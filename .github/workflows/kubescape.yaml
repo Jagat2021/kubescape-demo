@@ -2,7 +2,9 @@
   on: 
     pull_request:
     issue_comment:
-     types: [created]
+      types: [created]
+    discussion_comment:
+      types: [created, deleted]
   jobs:
     kubescape:
       runs-on: ubuntu-latest
