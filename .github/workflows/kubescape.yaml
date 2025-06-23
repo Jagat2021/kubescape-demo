@@ -10,9 +10,6 @@
       steps:
         - name: Checkout code
           uses: actions/checkout@v3
-          with:
-            repository: ${{ github.repository }}
-            ref: ${{ github.event_name == 'issue_comment' && github.event.pull_request.head.ref || github.head_ref }}
 
         - name: Check for skip-conftest comment
           id: check-skip
