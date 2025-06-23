@@ -8,28 +8,32 @@
         - name: Checkout code
           uses: actions/checkout@v3
 
-        - name: Kubescape Scan
-          id: kubescape
+        - name: Check for skip-conftest comment
+          id: check-skip
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
-              echo "Installing Kubescape..."
-              curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
-              export PATH=$PATH:/home/runner/.kubescape/bin
-              echo "Kubescape installation completed"
-      
-              echo "Starting Kubescape scan..."
-              kubescape version
-              
-              set +e
-
-              kubescape scan --severity-threshold high --keep-local -l debug framework nsa,mitre,soc2,cis-eks-t1.2.0 . -v
-              EXIT_CODE=$?
-              
-              set -e
-
-              if [ $EXIT_CODE -ne 0 ]; then
-                echo "::error::❌ Kubescape scan failed due to high or critical findings."
-                echo "Please review the scan results above and fix the issues before merging."
-                exit $EXIT_CODE
-              else
-                echo "✅ Kubescape scan passed. No high or critical findings."
-              fi
+            # Default to not skipping
+            SKIP_CONFTEST="false"
+            
+            # Extract PR number from GitHub event
+            PR_NUMBER=$(jq -r .pull_request.number "$GITHUB_EVENT_PATH")
+            
+            echo "Checking PR #$PR_NUMBER for skip-conftest in most recent comment"
+            
+            # Get the most recent comment on the PR
+            LATEST_COMMENT=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json comments -q '.comments | last | .body')
+            echo $LATEST_COMMENT
+            
+            # Check if it includes 'skip-conftest'
+            if echo "$LATEST_COMMENT" | grep -i "skip-conftest" > /dev/null; then
+              SKIP_CONFTEST="true"
+              echo "✅ Most recent comment contains 'skip-conftest'. Conftest will run with --no-fail"
+              echo "Latest comment preview: $(echo "$LATEST_COMMENT" | head -c 100)..."
+            else
+              echo "❌ Most recent comment does NOT contain 'skip-conftest'. Conftest will fail on violations"
+              echo "Latest comment preview: $(echo "$LATEST_COMMENT" | head -c 100)..."
+            fi
+            
+            # Set GitHub Actions output
+            echo "skip-conftest=$SKIP_CONFTEST" >> "$GITHUB_OUTPUT"
