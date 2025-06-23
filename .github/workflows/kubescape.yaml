@@ -6,6 +6,11 @@
   jobs:
     kubescape:
       runs-on: ubuntu-latest
+      if: |
+        github.event_name == 'workflow_call' || 
+        (github.event_name == 'issue_comment' && 
+        github.event.issue.pull_request && 
+        contains(github.event.comment.body, 'skip-conftest'))
 
       steps:
         - name: Checkout code
